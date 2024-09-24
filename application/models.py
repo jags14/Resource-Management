@@ -2,7 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 # from database import Base
 
-db = SQLAlchemy(session_options='scoped_session')
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -14,7 +14,7 @@ class User(db.Model):
     fs_uniquifier = db.Column(db.String(255), unique=True, nullable=False)
     role_id = db.Column(db.String, db.ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
     role = db.relationship('Role')
-    study_resource = db.relationship('resources', backref='creator')
+    study_resource = db.relationship('StudyResource', backref='creator')
     
 
 class Role(db.Model):
