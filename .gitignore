@@ -1,5 +1,6 @@
 .venv
 venv
 instance
-__pycache__
+*__pycache__
+application/__pycache__
 __init__.py
