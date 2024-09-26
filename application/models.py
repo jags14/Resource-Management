@@ -23,6 +23,10 @@ class RoleModel(db.Model):
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
 
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
 class StudyResourceModel(db.Model):
     __tablename__ = 'resources'
     id = db.Column(db.Integer, primary_key=True, nullable=False)

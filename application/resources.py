@@ -2,9 +2,9 @@ from flask_restful import Resource, Api, reqparse
 from .models import db, StudyResourceModel
 
 parser = reqparse.RequestParser()
-parser.add_argument('topic', type=str, help='Topic should be a string')
-parser.add_argument('description', type=str, help='Description should be a string')
-parser.add_argument('resource_link', type=str, help='link should be a string')
+parser.add_argument('topic', type=str, help='Topic should be a string', required=True)
+parser.add_argument('description', type=str, help='Description should be a string', required=True)
+parser.add_argument('resource_link', type=str, help='link should be a string', required=True)
 class StudyResource(Resource):
     def get(self):
         return {"message": "hello from api"}
