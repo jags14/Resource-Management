@@ -7,7 +7,9 @@ parser.add_argument('description', type=str, help='Description should be a strin
 parser.add_argument('resource_link', type=str, help='link should be a string', required=True)
 class StudyResource(Resource):
     def get(self):
-        return {"message": "hello from api"}
+        resources = db.session.query(StudyResourceModel).all()
+        resources_dict = [resource.to_dict() for resource in resources]
+        return resources_dict, 200
     
     def post(self):
         args = parser.parse_args() # this will give us arguments as a dictionary
