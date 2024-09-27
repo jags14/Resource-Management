@@ -41,4 +41,13 @@ class StudyResourceModel(db.Model):
         self.description = description
         self.resource_link = resource_link
         self.is_approved = is_approved
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'topic': self.topic,
+            'description': self.description,
+            'resource_link': self.resource_link,
+            'is_approved': self.is_approved
+        }
 
