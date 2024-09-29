@@ -4,3 +4,4 @@ instance
 *__pycache__
 application/__pycache__
 __init__.py
+.env

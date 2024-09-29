@@ -15,7 +15,25 @@ class UserModel(db.Model):
     role_id = db.Column(db.String, db.ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
     role = db.relationship('RoleModel')
     # study_resource = db.relationship('StudyResource', backref='creator')
+
+    def __init__(self, username, email, password, active, fs_uniquifier, role_id):
+
+        self.username = username
+        self.email = email
+        self.password = password
+        self.active = active
+        self.fs_uniquifier = fs_uniquifier
+        self.role_id = role_id
     
+    def to_dict(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+            'active': self.active,
+            'fs_uniquifier': self.fs_uniquifier,
+            'role_id': self.role_id,
+            'role': self.role
+        }
 
 class RoleModel(db.Model):
     __tablename__ = 'roles'
