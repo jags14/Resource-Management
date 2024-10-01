@@ -14,7 +14,7 @@ with app.app_context():
     # db.session.add(instructor)
     # db.session.commit()
     datastore.find_or_create_role(name='admin', description='User is the admin')
-    datastore.find_or_create_role(name='inst', description='User is an instructor', active=False)
+    datastore.find_or_create_role(name='inst', description='User is an instructor')
     datastore.find_or_create_role(name='stud', description='User is an Student')
     db.session.commit()
 
