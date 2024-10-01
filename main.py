@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask
-from application.models import db
+from application.models import db, UserModel, RoleModel
 from config import DevelopmentConfig
 from application.resources import StudyResource
 from flask_restful import Api
@@ -15,6 +15,10 @@ def create_app():
     app.config.from_object(DevelopmentConfig)
     db.init_app(app)
 
+    # integrating flask security
+    datastore = SQLAlchemyUserDatastore(db, UserModel, RoleModel)
+    app.security = Security(app, datastore)
+
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
     app.config['SECURITY_PASSWORD_SALT'] = os.environ.get("SECURITY_PASSWORD_SALT")
     api = Api(app)
@@ -23,9 +27,9 @@ def create_app():
     
     with app.app_context():
         import application.views
-    return app
+    return app, datastore
 
-app = create_app()
+app, datastore = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
