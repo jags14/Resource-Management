@@ -1,10 +1,18 @@
 
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import UserMixin, RoleMixin
 # from database import Base
 
 db = SQLAlchemy()
 
-class UserModel(db.Model):
+# secondary table for mamy-to-many relationship between users and roles
+class RolesUsers(db.Model):
+    __tablename__ = 'roles_users'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+    role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
+
+class UserModel(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -12,8 +20,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean())
     fs_uniquifier = db.Column(db.String(255), unique=True, nullable=False)
-    role_id = db.Column(db.String, db.ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
-    role = db.relationship('RoleModel')
+    roles = db.relationship('RoleModel', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
     # study_resource = db.relationship('StudyResource', backref='creator')
 
     def __init__(self, username, email, password, active, fs_uniquifier, role_id):
@@ -35,9 +42,9 @@ class UserModel(db.Model):
             'role': self.role
         }
 
-class RoleModel(db.Model):
+class RoleModel(db.Model, RoleMixin):
     __tablename__ = 'roles'
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
 
